@@ -25,6 +25,11 @@ module.exports = function(grunt) {
     },
 
     uglify: {
+      my_target: {
+        files: {
+          'public/dist/build.min.js': ['public/dist/build.js']
+        }
+      }
     },
 
     jshint: {
@@ -42,6 +47,11 @@ module.exports = function(grunt) {
     },
 
     cssmin: {
+      my_target: {
+        files: {
+          'public/dist/style.css.min': ['public/style.css']
+        }
+      }
     },
 
     watch: {
@@ -75,7 +85,8 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-mocha-test');
   grunt.loadNpmTasks('grunt-shell');
   grunt.loadNpmTasks('grunt-nodemon');
-  grunt.loadNpmTasks('grunt-contrib-concat');
+
+
 
 
   grunt.registerTask('server-dev', function (target) {
@@ -100,7 +111,9 @@ module.exports = function(grunt) {
   ]);
 
   grunt.registerTask('build', [
-    'concat'
+    'concat',
+    'uglify',
+    'cssmin'
   ]);
 
   grunt.registerTask('upload', function(n) {
@@ -113,11 +126,13 @@ module.exports = function(grunt) {
 
   grunt.registerTask('deploy', [
     // add your deploy tasks here
-  ]);
-
-  grunt.registerTask('default', [
     'test',
     'build'
   ]);
+
+  // grunt.registerTask('default', [
+  //   'test',
+  //   'build'
+  // ]);
 
 };
