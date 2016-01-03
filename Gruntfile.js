@@ -26,6 +26,9 @@ module.exports = function(grunt) {
 
     uglify: {
       my_target: {
+        options: {
+          mangle: false
+        },
         files: {
           'public/dist/build.min.js': ['public/dist/build.js']
         }
