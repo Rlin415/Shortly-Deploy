@@ -49,7 +49,7 @@ module.exports = function(grunt) {
     cssmin: {
       my_target: {
         files: {
-          'public/dist/style.css.min': ['public/style.css']
+          'public/dist/style.min.css': ['public/style.css']
         }
       }
     },
@@ -126,13 +126,12 @@ module.exports = function(grunt) {
 
   grunt.registerTask('deploy', [
     // add your deploy tasks here
+
+  ]);
+
+  grunt.registerTask('default', [
     'test',
     'build'
   ]);
-
-  // grunt.registerTask('default', [
-  //   'test',
-  //   'build'
-  // ]);
 
 };
