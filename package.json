@@ -6,6 +6,9 @@
   "repository": "",
   "license": "Proprietary",
   "private": true,
+  "engines": {
+    "node": "5.3.0"
+  },
   "scripts": {
     "start": "node index.js"
   },
@@ -34,8 +37,6 @@
     "bluebird": "1.0.8"
   },
   "devDependencies": {
-    "grunt-contrib-concat": "^0.3.0",
-    "grunt-contrib-uglify": "^0.4.1",
     "supertest": "^0.10.0"
   }
 }

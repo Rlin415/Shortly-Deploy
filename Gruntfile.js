@@ -3,10 +3,10 @@ module.exports = function(grunt) {
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
     concat: {
-      js: {
-        src: ['public/client/app.js', 'public/client/createLinkView.js', 'public/client/link.js', 'public/client/links.js','public/client/linksView.js', 'public/client/linkView.js', 'public/client/router.js'],
-        dest: 'public/dist/build.js'
-      },
+      dist: {
+        src: ['public/client/**/*.js'],
+        dest: 'public/dist/<%= pkg.name %>.js'
+      }
     },
 
     mochaTest: {
@@ -25,25 +25,21 @@ module.exports = function(grunt) {
     },
 
     uglify: {
-      my_target: {
-        options: {
-          mangle: false
+      options: {
+          banner: '/*! <%= pkg.name %> <%= grunt.template.today("dd-mm-yyyy") %> */\n'
         },
+      dist: {
         files: {
-          'public/dist/build.min.js': ['public/dist/build.js']
+          'public/dist/<%= pkg.name %>.min.js': ['<%= concat.dist.dest %>']
         }
       }
     },
 
     jshint: {
       files: [
-        'public/client/app.js',
-        'public/client/createLinkView.js',
-        'public/client/link.js',
-        'public/client/links.js',
-        'public/client/linksView.js',
-        'public/client/linkView.js',
-        'public/client/router.js'
+        'Gruntfile.js',
+        'app/**/*.js',
+        'public/**/*.js'
       ],
       options: {
         force: 'true',
@@ -58,7 +54,7 @@ module.exports = function(grunt) {
     cssmin: {
       my_target: {
         files: {
-          'public/dist/style.min.css': ['public/style.css']
+          'public/dist/style.min.css': 'public/style.css'
         }
       }
     },
@@ -82,6 +78,12 @@ module.exports = function(grunt) {
 
     shell: {
       prodServer: {
+        command: 'git push heroku master',
+        options: {
+          stdout: true,
+          stderr: true,
+          failOneError: true
+        }
       }
     },
   });
@@ -129,19 +131,21 @@ module.exports = function(grunt) {
   grunt.registerTask('upload', function(n) {
     if(grunt.option('prod')) {
       // add your production server task here
+      grunt.task.run(['shell:prodServer']);
     } else {
       grunt.task.run([ 'server-dev' ]);
     }
   });
 
-  grunt.registerTask('deploy', [
-    // add your deploy tasks here
-
-  ]);
-
-  grunt.registerTask('default', [
-    'test',
+  grunt.registerTask('heroku:production', [
     'build'
   ]);
 
+  grunt.registerTask('deploy', [
+    // add your deploy tasks here
+    'test',
+    'build',
+    'upload'
+  ]);
+  
 };
